@@ -6,72 +6,49 @@ import { getAppointmentsForDay } from "helpers/selectors";
 
 import "components/Application.scss";
 
-const appointments = {
-  1: {
-    id: 1,
-    time: "12pm",
-  },
-  2: {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 3,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      },
-    },
-  },
-  3: {
-    id: 3,
-    time: "2pm",
-  },
-  4: {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Archie Andrews",
-      interviewer: {
-        id: 4,
-        name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
-      },
-    },
-  },
-  5: {
-    id: 5,
-    time: "4pm",
-  },
-  6: {
-    id: 6,
-    time: "5pm",
-  },
-};
 export default function Application(props) {
   // const [day, setDay] = useState("Monday");
   // const [days, setDays] = useState([]);
   // const [appointments, setAppointments] = useState({});
 
-  // to combine states for day, days
+  // to combine states for day, days & appointements
   const [state, setState] = useState({
     day: "Monday",
     days: [],
+    appointments: {},
   });
   const setDay = (day) => setState({ ...state, day });
-  const setDays = (days) => {
-    setState((prev) => ({ ...prev, days }));
-  };
+  // const setDays = (days) => {
+  //   setState((prev) => ({ ...prev, days }));
+  // };
 
+  // to combine multiple API calls
   useEffect(() => {
-    const url = `http://localhost:8001/api/days`;
-    axios.get(url).then((response) => {
-      console.log("+++++", response.data);
-      setDays(response.data);
+    const urlDays = `http://localhost:8001/api/days`;
+    const urlAppoin = `http://localhost:8001/api/appointments`;
+
+    Promise.all([
+      axios.get(urlDays),
+      axios.get(urlAppoin),
+      //
+    ]).then((resp) => {
+      console.log(resp[0].data);
+      console.log("----", resp[1].data);
+      setState((prev) => ({
+        ...prev,
+        days: resp[0].data,
+        appointments: resp[1].data,
+      }));
     });
   }, []);
 
-  const appointmentss = Object.values(appointments).map((appointment) => {
+  // to get appointments for day from selector
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  console.log("stateee", state);
+  console.log("stateee.day", state.day);
+  console.log("dailyyyyy", dailyAppointments); /// getting empty array !!!
+
+  const appointment = dailyAppointments.map((appointment) => {
     return (
       <Appointment
         key={appointment.id}
@@ -103,7 +80,7 @@ export default function Application(props) {
           alt="Lighthouse Labs"
         />
       </section>
-      <section className="schedule">{appointmentss}</section>
+      <section className="schedule">{appointment}</section>
     </main>
   );
 }
