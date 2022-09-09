@@ -17,6 +17,26 @@ export function getAppointmentsForDay(state, day) {
   }
 }
 
+////
+export function getInterviewersForDay(state, day) {
+  const arr = [];
+
+  // to verify if day is in the state OBJ
+  const dayIsAvailable = state.days.find((daysName) => daysName.name === day);
+
+  // to get the arr of interviwers by interviewr.id
+  if (dayIsAvailable) {
+    const interviewersArr = dayIsAvailable.interviewers.map(
+      (id) => state.interviewers[id]
+    );
+
+    return interviewersArr;
+  }
+  if (dayIsAvailable === undefined) return arr;
+}
+
+////
+
 export function getInterview(state, interview) {
   if (interview) {
     const student = interview.student;

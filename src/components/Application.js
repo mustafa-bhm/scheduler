@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 import axios from "axios";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from "helpers/selectors";
 
 import "components/Application.scss";
 
@@ -35,9 +39,9 @@ export default function Application(props) {
       axios.get(urlInterv),
       //
     ]).then((resp) => {
-      console.log(resp[0].data);
-      console.log("----", resp[1].data);
-      console.log("--++--", resp[2].data[1]);
+      // console.log(resp[0].data);
+      // console.log("----", resp[1].data);
+      // console.log("--++--", resp[2].data[1]);
       setState((prev) => ({
         ...prev,
         days: resp[0].data,
@@ -49,6 +53,9 @@ export default function Application(props) {
 
   // to get appointments for day from selector
   const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const interviewers = getInterviewersForDay(state, state.day);
+  console.log("++++", interviewers);
+
   // console.log("stateee", state);
   // console.log("stateee.day", state.day);
   // console.log("dailyyyyy", dailyAppointments); /// getting empty array !!!
@@ -63,6 +70,7 @@ export default function Application(props) {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        interviewers={interviewers}
         // interview={appointment.interview}
       />
     );
