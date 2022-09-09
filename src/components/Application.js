@@ -16,6 +16,7 @@ export default function Application(props) {
     day: "Monday",
     days: [],
     appointments: {},
+    interviewers: {},
   });
   const setDay = (day) => setState({ ...state, day });
   // const setDays = (days) => {
@@ -26,36 +27,42 @@ export default function Application(props) {
   useEffect(() => {
     const urlDays = `http://localhost:8001/api/days`;
     const urlAppoin = `http://localhost:8001/api/appointments`;
+    const urlInterv = `http://localhost:8001/api/interviewers`;
 
     Promise.all([
       axios.get(urlDays),
       axios.get(urlAppoin),
+      axios.get(urlInterv),
       //
     ]).then((resp) => {
       console.log(resp[0].data);
       console.log("----", resp[1].data);
+      console.log("--++--", resp[2].data[1]);
       setState((prev) => ({
         ...prev,
         days: resp[0].data,
         appointments: resp[1].data,
+        interviewers: resp[2].data,
       }));
     });
   }, []);
 
   // to get appointments for day from selector
   const dailyAppointments = getAppointmentsForDay(state, state.day);
-  console.log("stateee", state);
-  console.log("stateee.day", state.day);
-  console.log("dailyyyyy", dailyAppointments); /// getting empty array !!!
+  // console.log("stateee", state);
+  // console.log("stateee.day", state.day);
+  // console.log("dailyyyyy", dailyAppointments); /// getting empty array !!!
 
   const appointment = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
     return (
       <Appointment
         key={appointment.id}
-        {...appointment}
+        // {...appointment}
         // or //
-        // id={appointment.id}
-        // time={appointment.time}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
         // interview={appointment.interview}
       />
     );
