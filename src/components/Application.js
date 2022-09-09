@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 import axios from "axios";
-import { getAppointmentsForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 import "components/Application.scss";
 
@@ -53,7 +53,7 @@ export default function Application(props) {
   // console.log("stateee.day", state.day);
   // console.log("dailyyyyy", dailyAppointments); /// getting empty array !!!
 
-  const appointment = dailyAppointments.map((appointment) => {
+  const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     return (
       <Appointment
@@ -87,7 +87,7 @@ export default function Application(props) {
           alt="Lighthouse Labs"
         />
       </section>
-      <section className="schedule">{appointment}</section>
+      <section className="schedule">{schedule}</section>
     </main>
   );
 }
