@@ -56,6 +56,25 @@ export default function Application(props) {
   const interviewers = getInterviewersForDay(state, state.day);
   console.log("++++", interviewers);
 
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
+      setState({
+        ...state,
+        appointments,
+      });
+      console.log(res);
+    });
+  }
   // console.log("stateee", state);
   // console.log("stateee.day", state.day);
   // console.log("dailyyyyy", dailyAppointments); /// getting empty array !!!
@@ -71,6 +90,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
         // interview={appointment.interview}
       />
     );
