@@ -67,13 +67,15 @@ export default function Application(props) {
       [id]: appointment,
     };
 
-    return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
-      setState({
-        ...state,
-        appointments,
+    return axios
+      .put(`http://localhost:8001/api/appointments/${id}`, appointment)
+      .then((res) => {
+        setState({
+          ...state,
+          appointments,
+        });
+        console.log(res);
       });
-      console.log(res);
-    });
   }
   // console.log("stateee", state);
   // console.log("stateee.day", state.day);
