@@ -6,6 +6,7 @@ import Show from "./Show";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 import { useVisualMode } from "hooks/useVisualMode";
 
 export default function Appointment(props) {
@@ -16,6 +17,8 @@ export default function Appointment(props) {
   const DELETE = "DELETE";
   const CONFIRM = "CONFIRM";
   const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
 
   function save(name, interviewer) {
     const interview = {
@@ -24,6 +27,10 @@ export default function Appointment(props) {
     };
     transition(SAVING);
     props.bookInterview(props.id, interview).then(() => transition(SHOW));
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch((error) => transition(ERROR_SAVE, true));
   }
 
   function deleteInterview(name, interviewer) {
@@ -34,7 +41,11 @@ export default function Appointment(props) {
 
     transition(DELETE);
 
-    props.cancelInterview(props.id, interview).then(() => transition(EMPTY));
+    // props.cancelInterview(props.id, interview).then(() => transition(EMPTY));
+    props
+      .cancelInterview(props.id, interview)
+      .then(() => transition(EMPTY))
+      .catch((error) => transition(ERROR_DELETE, true));
   }
 
   const { mode, transition, back } = useVisualMode(
@@ -59,7 +70,21 @@ export default function Appointment(props) {
       )}
 
       {mode === SAVING && <Status message={SAVING} />}
+      {mode === ERROR_SAVE && (
+        <Error
+          message="Appointment can't be saved ! Please try later "
+          // onClose={() => (SAVING ? transition(EMPTY) : { back })}
+          onClose={back}
+        />
+      )}
       {mode === DELETE && <Status message={DELETE} />}
+      {mode === ERROR_DELETE && (
+        <Error
+          message="Appointment can't be deleted ! Please try later "
+          // onClose={() => (DELETE ? transition(SHOW) : { back })}
+          onClose={back}
+        />
+      )}
       {mode === CONFIRM && (
         <Confirm onConfirm={deleteInterview} onCancel={back} message={DELETE} />
       )}
