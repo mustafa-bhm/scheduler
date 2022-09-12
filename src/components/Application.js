@@ -7,7 +7,7 @@ import {
   getInterview,
   getInterviewersForDay,
 } from "helpers/selectors";
-
+import "components/Appointment";
 import "components/Application.scss";
 
 export default function Application(props) {
@@ -51,11 +51,6 @@ export default function Application(props) {
     });
   }, []);
 
-  // to get appointments for day from selector
-  const dailyAppointments = getAppointmentsForDay(state, state.day);
-  const interviewers = getInterviewersForDay(state, state.day);
-  console.log("++++", interviewers);
-
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -81,6 +76,32 @@ export default function Application(props) {
   // console.log("stateee.day", state.day);
   // console.log("dailyyyyy", dailyAppointments); /// getting empty array !!!
 
+  /// to delete interviews
+  function cancelInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios
+      .delete(`http://localhost:8001/api/appointments/${id}`, appointment)
+      .then((res) => {
+        setState({
+          ...state,
+          appointments,
+        });
+      });
+  }
+  // to get appointments for day from selector
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const interviewers = getInterviewersForDay(state, state.day);
+  console.log("++++", interviewers);
+
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     return (
@@ -93,10 +114,12 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
         // interview={appointment.interview}
       />
     );
   });
+  schedule[5] = <Appointment key="last" time="5pm" />;
 
   return (
     <main className="layout">
