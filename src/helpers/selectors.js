@@ -1,10 +1,10 @@
 export function getAppointmentsForDay(state, day) {
   const arr = [];
 
-  // to verify if day is in the state OBJ
+  // to verify if day is in the state object
   const dayIsAvailable = state.days.find((daysName) => daysName.name === day);
 
-  // to get the arr of Appointments by appoi.id
+  // to get the arr of Appointments by appointment id
   if (dayIsAvailable) {
     const appoinArr = dayIsAvailable.appointments.map(
       (id) => state.appointments[id]

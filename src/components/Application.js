@@ -29,7 +29,6 @@ export default function Application(props) {
         interviewers={interviewers}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
-        // interview={appointment.interview}
       />
     );
   });

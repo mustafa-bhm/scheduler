@@ -14,7 +14,7 @@ export function useVisualMode(initial) {
     setHistory([...history, mode]);
   }
 
-  // go back from one mode to the previous one
+  // to go back from one mode to the previous one
   function back() {
     if (history.length - 1) {
       setHistory((prev) => {

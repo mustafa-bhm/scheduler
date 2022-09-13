@@ -11,6 +11,24 @@ export default function useApplicationData() {
 
   const setDay = (day) => setState({ ...state, day });
 
+  // to update available spots when deleting or adding new appointment
+
+  const spotsUpdate = (day, days, appointments) => {
+    const dayIndex = days.findIndex((daysName) => daysName.name === day);
+    const dayObj = days[dayIndex];
+    const appoinId = dayObj.appointments;
+
+    let spots = 0;
+    for (let id of appoinId) {
+      let appointment = appointments[id];
+      !appointment.interview && spots++;
+    }
+    let newDayObj = { ...dayObj, spots };
+    let newDayArr = [...days];
+    newDayArr[dayIndex] = newDayObj;
+    return newDayArr;
+  };
+
   // to combine multiple API calls
   useEffect(() => {
     const urlDays = `http://localhost:8001/api/days`;
@@ -47,9 +65,11 @@ export default function useApplicationData() {
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointment)
       .then((res) => {
+        let daysUpdate = spotsUpdate(state.day, state.days, appointments);
         setState({
           ...state,
           appointments,
+          days: daysUpdate,
         });
         console.log(res);
       });
@@ -59,7 +79,8 @@ export default function useApplicationData() {
   function cancelInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview },
+      // interview: { ...interview },
+      interview: null,
     };
 
     const appointments = {
@@ -70,9 +91,11 @@ export default function useApplicationData() {
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`, appointment)
       .then((res) => {
+        let daysUpdate = spotsUpdate(state.day, state.days, appointments);
         setState({
           ...state,
           appointments,
+          days: daysUpdate,
         });
       });
   }
