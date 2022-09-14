@@ -71,7 +71,6 @@ export default function useApplicationData() {
           appointments,
           days: daysUpdate,
         });
-        console.log(res);
       });
   }
 
