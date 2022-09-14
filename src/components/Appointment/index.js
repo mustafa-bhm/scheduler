@@ -72,16 +72,16 @@ export default function Appointment(props) {
       {mode === ERROR_SAVE && (
         <Error
           message="Appointment can't be saved ! Please try later "
-          // onClose={() => (SAVING ? transition(EMPTY) : { back })}
-          onClose={back}
+          // onClose={back}
+          onClose={() => transition(EMPTY)}
         />
       )}
       {mode === DELETE && <Status message={DELETE} />}
       {mode === ERROR_DELETE && (
         <Error
           message="Appointment can't be deleted ! Please try later "
-          // onClose={() => (DELETE ? transition(SHOW) : { back })}
-          onClose={back}
+          onClose={() => transition(SHOW)}
+          // onClose={back}
         />
       )}
       {mode === CONFIRM && (
