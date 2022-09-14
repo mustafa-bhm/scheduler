@@ -24,7 +24,11 @@ This project was built using the following technologies:
 
 ## Setup
 
-Install dependencies with `npm install`.
+Install dependencies with
+
+```sh
+npm install
+```
 
 ## Running Webpack Development Server
 
