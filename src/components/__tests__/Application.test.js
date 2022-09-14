@@ -5,11 +5,9 @@ import {
   cleanup,
   getByAltText,
   getByText,
-} from "@testing-library/react";
-import { waitForElement } from "@testing-library/react";
-import { fireEvent } from "@testing-library/react";
-import { prettyDOM } from "@testing-library/react";
-import {
+  waitForElement,
+  fireEvent,
+  prettyDOM,
   getAllByTestId,
   getByPlaceholderText,
   queryByText,
