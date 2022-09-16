@@ -30,7 +30,9 @@ Install dependencies with
 npm install
 ```
 
-## Running Webpack Development Server
+## Running the App
+
+To run this App , you will need to clone the following back-end API server from this link https://github.com/mustafa-bhm/scheduler-api and follow the instructions to start it, once done, then go ahead and start the Scheduler App by running the below command in your terminal.
 
 ```sh
 npm start
