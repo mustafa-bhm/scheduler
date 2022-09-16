@@ -8,7 +8,6 @@ import {
   getByText,
   waitForElement,
   fireEvent,
-  prettyDOM,
   getAllByTestId,
   getByPlaceholderText,
   queryByText,
