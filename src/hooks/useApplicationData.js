@@ -31,14 +31,10 @@ export default function useApplicationData() {
 
   // to combine multiple API calls
   useEffect(() => {
-    const urlDays = `http://localhost:8001/api/days`;
-    const urlAppoin = `http://localhost:8001/api/appointments`;
-    const urlInterv = `http://localhost:8001/api/interviewers`;
-
     Promise.all([
-      axios.get(urlDays),
-      axios.get(urlAppoin),
-      axios.get(urlInterv),
+      axios.get(`/api/days`),
+      axios.get(`/api/appointments`),
+      axios.get(`/api/interviewers`),
       //
     ]).then((resp) => {
       setState((prev) => ({
@@ -62,16 +58,14 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
-    return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, appointment)
-      .then((res) => {
-        let daysUpdate = spotsUpdate(state.day, state.days, appointments);
-        setState({
-          ...state,
-          appointments,
-          days: daysUpdate,
-        });
+    return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
+      let daysUpdate = spotsUpdate(state.day, state.days, appointments);
+      setState({
+        ...state,
+        appointments,
+        days: daysUpdate,
       });
+    });
   }
 
   /// to delete interviews & appointments
@@ -87,16 +81,14 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
-    return axios
-      .delete(`http://localhost:8001/api/appointments/${id}`, appointment)
-      .then((res) => {
-        let daysUpdate = spotsUpdate(state.day, state.days, appointments);
-        setState({
-          ...state,
-          appointments,
-          days: daysUpdate,
-        });
+    return axios.delete(`/api/appointments/${id}`, appointment).then((res) => {
+      let daysUpdate = spotsUpdate(state.day, state.days, appointments);
+      setState({
+        ...state,
+        appointments,
+        days: daysUpdate,
       });
+    });
   }
 
   return { state, setDay, bookInterview, cancelInterview };
