@@ -26,7 +26,7 @@ export default function Appointment(props) {
       interviewer,
     };
     transition(SAVING);
-    // props.bookInterview(props.id, interview).then(() => transition(SHOW));
+
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
@@ -72,15 +72,13 @@ export default function Appointment(props) {
         <Error
           message="Appointment can't be saved ! Please try later "
           onClose={back}
-          // onClose={() => transition(EDIT)}
         />
       )}
       {mode === DELETE && <Status message={DELETE} />}
       {mode === ERROR_DELETE && (
         <Error
           message="Appointment can't be deleted ! Please try later "
-          onClose={() => transition(SHOW)}
-          // onClose={back}
+          onClose={back}
         />
       )}
       {mode === CONFIRM && (
