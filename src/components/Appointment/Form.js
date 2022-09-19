@@ -16,9 +16,6 @@ export default function Form(props) {
     reset();
     props.onCancel();
   };
-  // const save = () => {
-  //   return props.onSave(student, interviewer);
-  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();

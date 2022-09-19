@@ -21,7 +21,7 @@ export function useVisualMode(initial) {
         const newArr = [...prev];
 
         newArr.pop();
-        // update setMode to go to modes back when deleting instead of just 1 mode
+
         setMode(newArr[newArr.length - 2]);
         console.log(" +++++", newArr);
 

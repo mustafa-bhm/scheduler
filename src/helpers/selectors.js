@@ -17,7 +17,6 @@ export function getAppointmentsForDay(state, day) {
   }
 }
 
-////
 export function getInterviewersForDay(state, day) {
   const arr = [];
 
@@ -34,8 +33,6 @@ export function getInterviewersForDay(state, day) {
   }
   if (dayIsAvailable === undefined) return arr;
 }
-
-////
 
 export function getInterview(state, interview) {
   if (interview) {
