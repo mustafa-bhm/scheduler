@@ -18,12 +18,18 @@ export function useVisualMode(initial) {
   function back() {
     if (history.length - 1) {
       setHistory((prev) => {
+        console.log("prev", prev);
         const newArr = [...prev];
+        console.log("newArr", newArr);
 
         newArr.pop();
 
-        setMode(newArr[newArr.length - 2]);
-        console.log(" +++++", newArr);
+        if (newArr[newArr.length - 1] === "CONFIRM") {
+          newArr.pop();
+        }
+
+        setMode(newArr[newArr.length - 1]);
+        console.log(" newArr after setMode", newArr);
 
         return newArr;
       });
